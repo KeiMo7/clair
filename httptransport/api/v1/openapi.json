@@ -643,6 +643,83 @@
         "summary": "Retrieve Pages of a Notification Set",
         "description": "By performing a GET with an id as a path parameter, the client will retrieve a paginated response of notification objects."
       }
+    },
+    "/indexer/api/v1/sbom/{digest}": {
+      "get": {
+        "operationId": "GetSBOM",
+        "description": "Export a CycloneDX software bill of materials for an indexed manifest, streamed as the packages are resolved. A failed index reports 409; an unknown manifest reports 404. Packages missing required fields are skipped and counted in the document metadata.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/digest"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "Restrict the export to packages of the given Package URL ecosystem type (for example deb, rpm, pypi, maven). Repeatable or comma-separated.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": false
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": false,
+            "description": "Restrict the export to packages introduced in the named layer digest (algo:hex). Repeatable.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CycloneDX SBOM streamed successfully",
+            "headers": {
+              "Clair-Error": {
+                "$ref": "#/components/headers/Clair-Error"
+              },
+              "Etag": {
+                "$ref": "#/components/headers/Etag"
+              }
+            },
+            "content": {
+              "application/vnd.cyclonedx+json": {},
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/bad_request"
+          },
+          "415": {
+            "$ref": "#/components/responses/unsupported_media_type"
+          },
+          "default": {
+            "$ref": "#/components/responses/oops"
+          },
+          "404": {
+            "$ref": "#/components/responses/not_found"
+          },
+          "409": {
+            "description": "Index report unsuccessful",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "tags": [
+          "indexer"
+        ]
+      }
     }
   },
   "security": [

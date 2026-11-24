@@ -205,6 +205,53 @@ def responses($r):
         }
       }
     },
+    "\($path_index)/sbom/{digest}": {
+      get: {
+        operationId: "GetSBOM",
+        description: "Export a CycloneDX software bill of materials for an indexed manifest, streamed as the packages are resolved. A failed index reports 409; an unknown manifest reports 404. Packages missing required fields are skipped and counted in the document metadata.",
+        parameters: [
+          param_ref("digest"),
+          {
+            name: "type",
+            in: "query",
+            required: false,
+            description: "Restrict the export to packages of the given Package URL ecosystem type (for example deb, rpm, pypi, maven). Repeatable or comma-separated.",
+            schema: { type: "array", items: { type: "string" } },
+            style: "form",
+            explode: false
+          },
+          {
+            name: "layer",
+            in: "query",
+            required: false,
+            description: "Restrict the export to packages introduced in the named layer digest (algo:hex). Repeatable.",
+            schema: { type: "array", items: { type: "string" } },
+            style: "form",
+            explode: true
+          }
+        ],
+        responses: responses({
+          "200": {
+            description: "CycloneDX SBOM streamed successfully",
+            headers: {
+              Etag: header_ref("Etag"),
+              "Clair-Error": header_ref("Clair-Error"),
+            },
+            content: {
+              "application/vnd.cyclonedx+json": {},
+              "application/json": {},
+            },
+          },
+          "404": response_ref("not_found"),
+          "409": {
+            description: "Index report unsuccessful",
+            content: {
+              "application/json": {},
+            },
+          },
+        }),
+      },
+    },
     "\($path_match)/vulnerability_report/{digest}": {
       get: {
         operationId: "GetVulnerabilityReport",

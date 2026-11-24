@@ -3,6 +3,7 @@ module github.com/quay/clair/v4
 go 1.26.0
 
 require (
+	github.com/CycloneDX/cyclonedx-go v0.12.0
 	github.com/Masterminds/semver v1.5.0
 	github.com/evanphx/json-patch/v5 v5.9.11
 	github.com/go-jose/go-jose/v3 v3.0.5
@@ -13,6 +14,7 @@ require (
 	github.com/grafana/pyroscope-go/godeltaprof v0.1.11
 	github.com/jackc/pgx/v5 v5.12.0
 	github.com/klauspost/compress v1.20.3
+	github.com/package-url/packageurl-go v0.1.7
 	github.com/prometheus/client_golang v1.25.0
 	github.com/quay/clair/config v1.4.3
 	github.com/quay/claircore v1.6.3
@@ -48,7 +50,6 @@ require (
 
 require (
 	cel.dev/expr v0.25.3 // indirect
-	github.com/CycloneDX/cyclonedx-go v0.12.0 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
@@ -74,7 +75,6 @@ require (
 	github.com/ncruces/go-strftime v1.1.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
-	github.com/package-url/packageurl-go v0.1.7 // indirect
 	github.com/prometheus/client_model v0.6.3 // indirect
 	github.com/prometheus/common v0.72.0 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect

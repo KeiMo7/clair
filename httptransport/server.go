@@ -29,6 +29,7 @@ const (
 	IndexAPIPath                 = indexerRoot + apiRoot + "index_report"
 	IndexReportAPIPath           = indexerRoot + apiRoot + "index_report/"
 	IndexStateAPIPath            = indexerRoot + apiRoot + "index_state"
+	SBOMPath                     = indexerRoot + apiRoot + "sbom/"
 	AffectedManifestAPIPath      = indexerRoot + internalRoot + "affected_manifest/"
 	VulnerabilityReportPath      = matcherRoot + apiRoot + "vulnerability_report/"
 	UpdateOperationAPIPath       = matcherRoot + internalRoot + "update_operation"
@@ -79,6 +80,9 @@ func New(ctx context.Context, conf *config.Config, indexer indexer.Service, matc
 			Next: v1,
 		}
 		mux.Handle(prefix, rl)
+
+		sbomV1 := NewSBOMV1(ctx, prefix, indexer, traceOpt)
+		mux.Handle(SBOMPath, sbomV1)
 	}
 	if conf.Mode == config.MatcherMode || conf.Mode == config.ComboMode {
 		if indexer == nil || matcher == nil {
